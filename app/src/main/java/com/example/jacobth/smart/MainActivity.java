@@ -2,85 +2,51 @@ package com.example.jacobth.smart;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener, View.OnClickListener{
+public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener{
 
-    private ImageButton backButton;
+    ListView list;
+    String[] values = new String[] { "Mord", "Misshandel", "Sexualbrott",
+            "Våldtäkt", "Bostadsinbrott", "Rån", "Skadegörelse" };
+
+    Integer[] imgid={R.drawable.back, R.drawable.back, R.drawable.back,
+            R.drawable.back, R.drawable.back, R.drawable.back,
+            R.drawable.back, R.drawable.back,
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        loadList();
-    }
 
-    private void loadList() {
-        final ListView listview = (ListView) findViewById(R.id.listView);
-        String[] values = new String[] { "Mord", "Misshandel", "Sexualbrott",
-                "Våldtäkt", "Bostadsinbrott", "Rån", "Skadegörelse" };
+        CustomListAdapter adapter=new CustomListAdapter(this, values, imgid);
+        list=(ListView)findViewById(R.id.list);
+        list.setAdapter(adapter);
 
-        final ArrayList<String> list = new ArrayList<String>();
-        for (int i = 0; i < values.length; ++i) {
-            list.add(values[i]);
-        }
-        final StableArrayAdapter adapter = new StableArrayAdapter(this,
-                R.layout.list_design, list);
-        listview.setAdapter(adapter);
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                // TODO Auto-generated method stub
+                String item= values[+position];
+                Intent i = new Intent(MainActivity.this, StatActivity2.class);
+                i.putExtra("category", item);
+                startActivity(i);
 
-                final String item = (String) parent.getItemAtPosition(position);
-                view.animate().setDuration(500).alpha(0).withEndAction(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        setContentView(R.layout.stats);
-                        backButton =(ImageButton)findViewById(R.id.backButton);
-                        ImageView imageView = (ImageView)findViewById(R.id.imageView);
-                        TextView textView = (TextView)findViewById(R.id.textHigh);
-
-                        Animation RightSwipe = AnimationUtils.loadAnimation(this, R.layout.left_slide);
-                        ScreenAnimation.startAnimation(RightSwipe);
-
-                        switch (item) {
-                            case "Rån":
-                                textView.setText("Anmälda rån per 100 000 invånare från och med år 1950");
-                                imageView.setImageResource(R.drawable.robbery);
-                                break;
-                            case "Misshandel":
-                                textView.setText("Anmäld misshandel per 100 000 invånare från och med år 1950");
-                                imageView.setImageResource(R.drawable.violence);
-                                break;
-                        }
-                        adapter.notifyDataSetChanged();
-                        view.setAlpha(1);
-                    }
-                });
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
-    }
-
-    private void backButton() {
-
     }
 
     @Override
@@ -104,7 +70,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
         if(id == R.id.back) {
             setContentView(R.layout.activity_main);
-            loadList();
+           // loadList();
             return true;
         }
 
@@ -123,21 +89,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.backButton:
-                try {
-                    setContentView(R.layout.activity_main);
-                    loadList();
-                } catch (Exception e) {
-
-                    e.printStackTrace();
-                }
-                break;
-        }
     }
 
     private class StableArrayAdapter extends ArrayAdapter<String> {
@@ -163,9 +114,5 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
             return true;
         }
 
-    }
-
-    private void addSpinner() {
-        
     }
 }
