@@ -38,7 +38,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
                                     int position, long id) {
                 // TODO Auto-generated method stub
                 String item= values[+position];
-                Intent i = new Intent(MainActivity.this, StatActivity2.class);
+                Intent i = new Intent(MainActivity.this, StatActivity.class);
                 i.putExtra("category", item);
                 startActivity(i);
 
@@ -71,11 +71,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        switch (view.getId()) {
-            case 2:
-                setContentView(R.layout.stats);
-                break;
-        }
     }
 
     @Override

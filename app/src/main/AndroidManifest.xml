@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StatActivity2" />
+            android:name=".StatActivity" />
     </application>
 
 </manifest>
