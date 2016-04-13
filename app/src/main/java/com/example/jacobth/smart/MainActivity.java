@@ -16,12 +16,10 @@ import java.util.List;
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener{
 
     ListView list;
-    String[] values = new String[] { "Mord", "Misshandel", "Sexualbrott",
-            "Våldtäkt", "Bostadsinbrott", "Rån", "Skadegörelse" };
+    String[] values = new String[] { "Mord", "Misshandel", "Sexualbrott", "Inbrott", "Rån", "Skadegörelse" };
 
-    Integer[] imgid={R.drawable.back, R.drawable.back, R.drawable.back,
-            R.drawable.back, R.drawable.back, R.drawable.back,
-            R.drawable.back, R.drawable.back,
+    Integer[] imgid={R.mipmap.kill_icon, R.mipmap.beat_icon, R.mipmap.sex_icon,
+            R.mipmap.steal_icon, R.mipmap.rob_icon, R.mipmap.damage_icon,
     };
 
     @Override
@@ -65,12 +63,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
-        }
-
-        if(id == R.id.back) {
-            setContentView(R.layout.activity_main);
-           // loadList();
             return true;
         }
 

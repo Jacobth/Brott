@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="#45818E"
+    android:background="#2196F3"
     android:animateLayoutChanges="true">
 
     <ListView
@@ -15,11 +15,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:text="Källa: Brottsförebyggande rådet www.bra.se"
         android:id="@+id/listText"
-        android:visibility="invisible"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:textColor="#ffffff" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="48dp" />
 
 </RelativeLayout>

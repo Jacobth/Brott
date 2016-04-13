@@ -2,6 +2,7 @@ package com.example.jacobth.smart;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -21,9 +24,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-/**
- * Created by jacobth on 2016-04-09.
- */
 public class StatActivity2 extends Activity implements View.OnClickListener{
 
     private ImageButton backButton;
@@ -50,13 +50,24 @@ public class StatActivity2 extends Activity implements View.OnClickListener{
         BarChart chart = (BarChart) findViewById(R.id.chart);
         ArrayList<BarEntry> entries = getData(file);
 
-        BarDataSet dataSet = new BarDataSet(entries, "Number of crimes");
-        ArrayList<String> labels = getLabels(entries.size());
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setValueFormatter(new MyYAxisValueFormatter());
+
+        BarDataSet dataSet = new BarDataSet(entries, "Antal anmälda brott");
+        ArrayList<String> labels = getLabels();
         BarData data = new BarData(labels, dataSet);
+        data.setValueFormatter(new BarDataFormatter());
 
         chart.setData(data);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        dataSet.setColor(Color.WHITE);
+
         chart.animateY(2000);
+        chart.getAxisRight().setEnabled(false);
+        chart.getAxisLeft().setTextColor(Color.WHITE);
+        chart.getBarData().setValueTextColor(Color.WHITE);
+        chart.getXAxis().setTextColor(Color.WHITE);
+        chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        chart.setDescription("");
     }
 
     private void setLayout(String item) {
@@ -73,27 +84,48 @@ public class StatActivity2 extends Activity implements View.OnClickListener{
                 break;
             case "Sexualbrott":
                 textView.setText("Anmälda sexualbrott per 100 000 invånare från och med år 1950");
-                drawChart("violenceper.txt");
+                drawChart("sexualper.txt");
+                break;
+            case "Inbrott":
+                textView.setText("Anmälda inbrott per 100 000 invånare från och med år 1950");
+                drawChart("breakinper.txt");
+                break;
+            case "Mord":
+                textView.setText("Anmälda mord per 100 000 invånare från och med år 1950");
+                drawChart("killingsper.txt");
+                break;
+            case "Skadegörelse":
+                textView.setText("Anmäld skadegörelse per 100 000 invånare från och med år 1950");
+                drawChart("damageper.txt");
                 break;
         }
     }
 
-    private ArrayList<String> getLabels(int size) {
+    private ArrayList<String> getLabels() {
         ArrayList<String> labels = new ArrayList<String>();
-        for(int i = 0; i < size; i++) {
-            if(i == 0) {
-                labels.add("1950");
-            }
-            else if(i == size/2) {
-                labels.add("1991");
-            }
-            else if(i == size-1) {
-                labels.add("2014");
-            }
-            else {
-                labels.add("");
+
+        try {
+            InputStream inputStream = getAssets().open("years.txt");
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                    labels.add(receiveString);
+                }
+                inputStream.close();
             }
         }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return labels;
     }
 
