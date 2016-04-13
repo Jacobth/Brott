@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.jacobth.smart"
-        minSdkVersion 22
+        minSdkVersion 11
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"

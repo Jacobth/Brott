@@ -95,9 +95,11 @@ public class StatActivity extends Activity implements View.OnClickListener, TabH
         chart.getAxisRight().setEnabled(false);
         chart.getAxisLeft().setTextColor(Color.WHITE);
         chart.getBarData().setValueTextColor(Color.WHITE);
+        chart.getBarData().setHighlightEnabled(false);
         chart.getXAxis().setTextColor(Color.WHITE);
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         chart.setDescription("");
+        chart.getLegend().setTextColor(Color.WHITE);
     }
 
     private void setPerLayout(String item) {
