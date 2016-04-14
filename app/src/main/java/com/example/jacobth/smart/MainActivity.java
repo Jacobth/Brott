@@ -18,7 +18,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     ListView list;
     String[] values = new String[] { "Mord", "Misshandel", "Sexualbrott", "Inbrott", "Rån", "Skadegörelse" };
 
-    Integer[] imgid={R.mipmap.kill_icon, R.mipmap.beat_icon, R.mipmap.sex_icon,
+    Integer[] imgId={R.mipmap.kill_icon, R.mipmap.beat_icon2, R.mipmap.sex_icon,
             R.mipmap.steal_icon, R.mipmap.rob_icon, R.mipmap.damage_icon,
     };
 
@@ -27,7 +27,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        CustomListAdapter adapter=new CustomListAdapter(this, values, imgid);
+        CustomListAdapter adapter=new CustomListAdapter(this, values, imgId);
         list=(ListView)findViewById(R.id.list);
         list.setAdapter(adapter);
 
@@ -63,6 +63,9 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+            //i.putExtra("category", item);
+            startActivity(i);
             return true;
         }
 
@@ -75,31 +78,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
-
-    private class StableArrayAdapter extends ArrayAdapter<String> {
-
-        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
-
-        public StableArrayAdapter(Context context, int textViewResourceId,
-                                  List<String> objects) {
-            super(context, textViewResourceId, objects);
-            for (int i = 0; i < objects.size(); ++i) {
-                mIdMap.put(objects.get(i), i);
-            }
-        }
-
-        @Override
-        public long getItemId(int position) {
-            String item = getItem(position);
-            return mIdMap.get(item);
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
 
     }
 }

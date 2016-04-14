@@ -2,8 +2,11 @@ package com.example.jacobth.smart;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TabHost;
@@ -23,11 +26,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class StatActivity extends Activity implements View.OnClickListener, TabHost.OnTabChangeListener{
+public class StatActivity extends Activity implements TabHost.OnTabChangeListener{
 
-    private ImageButton backButton;
     private BarChart chart;
     private BarChart chartTotal;
+    private boolean showValues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +55,11 @@ public class StatActivity extends Activity implements View.OnClickListener, TabH
 
         setTabColor(tabHost);
         tabHost.setOnTabChangedListener(this);
-     //   backButton =(ImageButton)findViewById(R.id.backButton);
-     //   backButton.setOnClickListener(this);
+
+        //  overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        showValues = prefs.getBoolean("bar_check", true);
 
         Intent i = getIntent();
         String category = i.getExtras().getString("category");
@@ -71,12 +77,6 @@ public class StatActivity extends Activity implements View.OnClickListener, TabH
         }
     }
 
-    @Override
-    public void onClick(View view) {
-   //     finish();
-      //  overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-    }
-
     private void drawChart(String file, BarChart chart) {
         ArrayList<BarEntry> entries = getData(file);
 
@@ -91,7 +91,7 @@ public class StatActivity extends Activity implements View.OnClickListener, TabH
         chart.setData(data);
         dataSet.setColor(Color.WHITE);
 
-        chart.animateY(2000);
+        chart.animateY(1500);
         chart.getAxisRight().setEnabled(false);
         chart.getAxisLeft().setTextColor(Color.WHITE);
         chart.getBarData().setValueTextColor(Color.WHITE);
@@ -100,6 +100,10 @@ public class StatActivity extends Activity implements View.OnClickListener, TabH
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         chart.setDescription("");
         chart.getLegend().setTextColor(Color.WHITE);
+
+        if(!showValues) {
+            chart.getBarData().setDrawValues(false);
+        }
     }
 
     private void setPerLayout(String item) {
